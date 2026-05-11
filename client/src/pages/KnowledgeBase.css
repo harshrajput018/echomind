@@ -1,0 +1,95 @@
+.stats-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.stat-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.75rem;
+  min-width: 140px;
+  flex: 1;
+}
+.stat-val { font-size: 1.8rem; font-weight: 700; color: var(--primary); letter-spacing: -0.03em; }
+.stat-lbl { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; font-weight: 500; }
+
+.upload-zone {
+  background: var(--surface);
+  border: 2px dashed var(--primary-mid);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 2rem;
+}
+.upload-zone:hover { border-color: var(--primary); background: var(--primary-lt); }
+.upload-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.upload-title { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+.upload-sub { font-size: 0.82rem; color: var(--muted); }
+
+.section-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.empty-docs {
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 2rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.docs-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.doc-row {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.875rem 1rem;
+  transition: border-color 0.15s;
+}
+.doc-row:hover { border-color: var(--border2); }
+.doc-icon { font-size: 1.25rem; flex-shrink: 0; }
+.doc-info { flex: 1; min-width: 0; }
+.doc-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.15rem;
+}
+.doc-meta { font-size: 0.75rem; color: var(--muted); }
+
+.doc-status {
+  padding: 0.2rem 0.65rem;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  flex-shrink: 0;
+}
+.doc-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted2);
+  padding: 6px;
+  border-radius: 6px;
+  display: flex; align-items: center;
+  transition: color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+.doc-delete:hover { color: var(--red); background: var(--red-lt); }
