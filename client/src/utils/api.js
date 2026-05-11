@@ -1,12 +1,8 @@
 import axios from "axios";
 
-const api = axios.create({ baseURL: "/api" });
+const baseURL = "https://echomind-6rxd.onrender.com/api";
 
-const baseURL = process.env.REACT_APP_API_URL
-  ? `${process.env.REACT_APP_API_URL}/api`
-  : "/api";
-
-console.log("API URL:", baseURL);
+const api = axios.create({ baseURL });
 
 // Attach JWT token from localStorage
 api.interceptors.request.use((config) => {
