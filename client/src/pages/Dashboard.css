@@ -30,21 +30,21 @@
 .page-sub { font-size: 0.9rem; color: var(--muted); }
 
 .btn-primary {
-  display: inline-flex;
+  display: inline-flex !important;
   align-items: center;
   gap: 0.4rem;
   padding: 0.6rem 1.25rem;
-  background: var(--primary);
-  color: #fff;
+  background: #6366f1 !important;
+  color: #ffffff !important;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
   white-space: nowrap;
 }
-.btn-primary:hover { background: var(--primary-h); }
+.btn-primary:hover { background: #4f46e5 !important; }
 .btn-primary:active { transform: scale(0.97); }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
