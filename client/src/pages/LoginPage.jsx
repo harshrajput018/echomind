@@ -8,14 +8,16 @@ import "./Auth.css";
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     if (!form.email || !form.password) {
-      toast.error("Please fill in all fields.");
+      setError("Please fill in all fields.");
       return;
     }
 
@@ -30,13 +32,15 @@ export default function LoginPage() {
       const msg = err.response?.data?.error || err.response?.data?.errors?.[0]?.msg;
 
       if (status === 401) {
-        toast.error("Incorrect email or password. Please try again.");
+        setError("Incorrect email or password. Please try again.");
       } else if (status === 404) {
-        toast.error("No account found with this email. Create one?");
+        setError("No account found with this email.");
       } else if (status === 429) {
-        toast.error("Too many attempts. Please wait a moment.");
+        setError("Too many attempts. Please wait a moment.");
+      } else if (!err.response) {
+        setError("Cannot reach server. Please try again in 30 seconds.");
       } else {
-        toast.error(msg || "Login failed. Please try again.");
+        setError(msg || "Login failed. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -49,6 +53,13 @@ export default function LoginPage() {
         <div className="auth-logo">🧠</div>
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-sub">Sign in to your EchoMind workspace</p>
+
+        {error && (
+          <div className="auth-error">
+            ⚠️ {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="field">
             <label>Email</label>
@@ -57,7 +68,7 @@ export default function LoginPage() {
               required
               autoComplete="email"
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onChange={(e) => { setForm({ ...form, email: e.target.value }); setError(""); }}
               placeholder="you@example.com"
             />
           </div>
@@ -68,7 +79,7 @@ export default function LoginPage() {
               required
               autoComplete="current-password"
               value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              onChange={(e) => { setForm({ ...form, password: e.target.value }); setError(""); }}
               placeholder="••••••••"
             />
           </div>
