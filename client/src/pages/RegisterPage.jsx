@@ -13,6 +13,20 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!form.name || !form.email || !form.password) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+    if (form.name.trim().length < 2) {
+      toast.error("Name must be at least 2 characters.");
+      return;
+    }
+    if (form.password.length < 6) {
+      toast.error("Password must be at least 6 characters.");
+      return;
+    }
+
     setLoading(true);
     try {
       const { data } = await api.post("/auth/register", form);
@@ -20,7 +34,18 @@ export default function RegisterPage() {
       toast.success("Account created! Welcome to EchoMind 🧠");
       navigate("/dashboard");
     } catch (err) {
-      toast.error(err.response?.data?.error || err.response?.data?.errors?.[0]?.msg || "Registration failed.");
+      const status = err.response?.status;
+      const msg = err.response?.data?.error || err.response?.data?.errors?.[0]?.msg;
+
+      if (status === 400 && msg?.toLowerCase().includes("email")) {
+        toast.error("An account with this email already exists. Sign in instead?");
+      } else if (status === 400) {
+        toast.error(msg || "Invalid details. Please check and try again.");
+      } else if (status === 429) {
+        toast.error("Too many attempts. Please wait a moment.");
+      } else {
+        toast.error(msg || "Registration failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -36,7 +61,8 @@ export default function RegisterPage() {
           <div className="field">
             <label>Full name</label>
             <input
-              type="text" required
+              type="text"
+              required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               placeholder="Jane Smith"
@@ -45,7 +71,8 @@ export default function RegisterPage() {
           <div className="field">
             <label>Email</label>
             <input
-              type="email" required
+              type="email"
+              required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder="you@example.com"
@@ -54,7 +81,9 @@ export default function RegisterPage() {
           <div className="field">
             <label>Password</label>
             <input
-              type="password" required minLength={6}
+              type="password"
+              required
+              minLength={6}
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               placeholder="Min 6 characters"

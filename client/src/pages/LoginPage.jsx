@@ -13,6 +13,12 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!form.email || !form.password) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
     setLoading(true);
     try {
       const { data } = await api.post("/auth/login", form);
@@ -20,7 +26,18 @@ export default function LoginPage() {
       toast.success(`Welcome back, ${data.user.name}!`);
       navigate("/dashboard");
     } catch (err) {
-      toast.error(err.response?.data?.error || "Login failed.");
+      const status = err.response?.status;
+      const msg = err.response?.data?.error || err.response?.data?.errors?.[0]?.msg;
+
+      if (status === 401) {
+        toast.error("Incorrect email or password. Please try again.");
+      } else if (status === 404) {
+        toast.error("No account found with this email. Create one?");
+      } else if (status === 429) {
+        toast.error("Too many attempts. Please wait a moment.");
+      } else {
+        toast.error(msg || "Login failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -36,7 +53,9 @@ export default function LoginPage() {
           <div className="field">
             <label>Email</label>
             <input
-              type="email" required autoComplete="email"
+              type="email"
+              required
+              autoComplete="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder="you@example.com"
@@ -45,7 +64,9 @@ export default function LoginPage() {
           <div className="field">
             <label>Password</label>
             <input
-              type="password" required autoComplete="current-password"
+              type="password"
+              required
+              autoComplete="current-password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               placeholder="••••••••"
